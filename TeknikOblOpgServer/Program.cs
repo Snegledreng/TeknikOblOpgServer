@@ -3,6 +3,12 @@
 
 using TeknikOblOpgServer;
 
-Server server = new();
+/*
+ * Comment out one, and run other.
+ * line 11 for the string-based server
+ * line 13 for the json-based server
+ */
 
-server.Start();
+//Server server = new(); server.Start();
+
+ServerJSON serverJSON = new(); serverJSON.Start();

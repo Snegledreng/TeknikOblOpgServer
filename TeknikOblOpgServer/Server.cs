@@ -5,14 +5,14 @@ namespace TeknikOblOpgServer;
 
 public class Server
 {
-	private const int PORT = 7;
+	private const int PORT = 6969;
 
 	public void Start()
 	{
 		//Definerer server
 		TcpListener server = new TcpListener(PORT);
 		server.Start();
-		Console.WriteLine("Server startes på port:" + PORT);
+		Console.WriteLine("Server startes på port: " + PORT);
 		//Venter på klient
 		while (true)
 		{
@@ -31,35 +31,41 @@ public class Server
 		string kommando = sr.ReadLine();
 
 		//Skriver linje tilbage
-		sw.WriteLine("Metode " + kommando + " modtaget.");
-		sw.WriteLine("Input two numbers");
-		sw.Flush();
-		
-		//Læser linje fra netværket
+        if (kommando.ToLower() is "add" or "subtract" or "random")
+        {
+            sw.WriteLine(kommando + " recieved.");
+            sw.WriteLine("Input two numbers:");
+            sw.Flush();
+        }
+        else
+        {
+			sw.WriteLine(kommando + " unrecognised");
+			sw.Flush();
+        }
+
+        //Læser linje fra netværket
 		string[] tals = sr.ReadLine().Split(" ");
 		List<int> talsInt = new();
 		talsInt.Add(int.Parse(tals[0]));
 		talsInt.Add(int.Parse(tals[1]));
 
-		//Laver beregninger, og skriver resultat tilbage.
-		if (kommando is "Add" or "add")
-		{
-			sw.WriteLine(Add(talsInt).ToString());
-			sw.Flush();
-		}
-		else if (kommando is "Subtract" or "subtract")
-		{
-			sw.WriteLine(Subtract(talsInt).ToString());
-			sw.Flush();
-		}
-		else if (kommando is "Random" or "random")
-		{
-			sw.WriteLine(Random(talsInt).ToString());
-			sw.Flush();
-		}
-	}
+        switch (kommando.ToLower())
+        {
+            //Laver beregninger, og skriver resultat tilbage.
+            case "add":
+                sw.WriteLine(Add(talsInt).ToString());
+                break;
+            case "subtract":
+                sw.WriteLine(Subtract(talsInt).ToString());
+                break;
+            case "random":
+                sw.WriteLine(Random(talsInt).ToString());
+                break;
+        }
+        sw.Flush();
+    }
 
-	public int Add(List<int> l)
+    public int Add(List<int> l)
 	{
 		return l[0] + l[1];
 	}
