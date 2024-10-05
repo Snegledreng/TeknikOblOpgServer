@@ -1,2 +1,8 @@
 ﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+
+
+using TeknikOblOpgServer;
+
+Server server = new();
+
+server.Start();
