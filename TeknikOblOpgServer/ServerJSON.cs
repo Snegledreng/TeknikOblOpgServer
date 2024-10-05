@@ -1,4 +1,5 @@
 ﻿using System.Net.Sockets;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text.Json;
 
@@ -33,21 +34,30 @@ public class ServerJSON
             CommandFromClient commandFromClient = JsonSerializer.Deserialize<CommandFromClient>(json);
 
             int result = 0;
+            void PrintResult()
+            {
+                sw.WriteLine(result);
+                sw.Flush();
+            }
             switch (commandFromClient.Command.ToLower())
             {
                 case "add":
                     result = Add(commandFromClient.Number1, commandFromClient.Number2);
+                    PrintResult();
                     break;
                 case "subtract":
                     result = Subtract(commandFromClient.Number1, commandFromClient.Number2);
+                    PrintResult();
                     break;
                 case "random":
                     result = Random(commandFromClient.Number1, commandFromClient.Number2);
+                    PrintResult();
                     break;
+                default:
+					sw.WriteLine("Unknown command. Use commands: add, subtract, random");
+                    sw.Flush();
+					break;
             }
-
-            sw.WriteLine(result);
-            sw.Flush();
         }
         catch (Exception e)
         {
